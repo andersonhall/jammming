@@ -1,0 +1,9 @@
+.track {
+  margin: 15px auto;
+  padding: 5px;
+  border: 1px solid black;
+}
+
+.track h3, .track p {
+  margin: 0;
+}
