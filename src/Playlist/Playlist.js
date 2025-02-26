@@ -3,9 +3,10 @@ import styles from './Playlist.module.css';
 
 const Playlist = () => {
   return (
-    <div>
-      <h1>Playlist</h1>
-    </div>
+    <form>
+      <input defaultValue={'New Playlist'} />
+      <button className={styles.playlistSave}>SAVE TO SPOTIFY</button>
+    </form>
   );
 };
 
