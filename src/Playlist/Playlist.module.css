@@ -1,15 +1,15 @@
 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 0 auto;
-    width: 500px;
-    min-height: 60vh;
-    padding: 20px;
-    text-align: left;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 auto;
+  width: 500px;
+  min-height: 60vh;
+  padding: 20px;
+  text-align: left;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 form input {
@@ -18,14 +18,4 @@ form input {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-}
-
-.playlistSave {
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  width: 40%;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
