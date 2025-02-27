@@ -39,6 +39,13 @@ function App() {
     });
   };
 
+  const changePlaylistName = name => {
+    setPlaylist({
+      ...playlist,
+      playlistName: name,
+    });
+  };
+
   return (
     <div className='App'>
       <SearchBar />
@@ -48,7 +55,11 @@ function App() {
           tracks={searchTracks}
           onSelectTrack={moveToPlaylist}
         />
-        <Playlist playlist={playlist} onSelectTrack={removeFromPlaylist} />
+        <Playlist
+          playlist={playlist}
+          onSelectTrack={removeFromPlaylist}
+          onNameChange={changePlaylistName}
+        />
       </main>
     </div>
   );

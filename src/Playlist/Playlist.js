@@ -3,9 +3,13 @@ import styles from './Playlist.module.css';
 import Tracklist from '../Tracklist/Tracklist';
 
 const Playlist = props => {
+  const handleChange = event => {
+    event.preventDefault();
+    props.onNameChange(event.target.value);
+  };
   return (
-    <form>
-      <input defaultValue={props.playlist.playlistName} />
+    <form action='#'>
+      <input id='playlistName' value={props.playlist.playlistName} onChange={handleChange} />
       <Tracklist
         tracks={props.playlist.tracks}
         name={props.playlist.playlistName}
