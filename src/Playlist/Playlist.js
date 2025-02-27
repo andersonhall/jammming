@@ -7,6 +7,12 @@ const Playlist = props => {
     event.preventDefault();
     props.onNameChange(event.target.value);
   };
+  const handleSave = event => {
+    event.preventDefault();
+    const uris = props.playlist.tracks.map(track => track.uri);
+    console.log('Save playlist to Spotify');
+    console.log(uris);
+  };
   return (
     <form action='#'>
       <input id='playlistName' value={props.playlist.playlistName} onChange={handleChange} />
@@ -16,7 +22,9 @@ const Playlist = props => {
         onSelectTrack={props.onSelectTrack}
         icon='-'
       />
-      <button className='saveBtn'>SAVE TO SPOTIFY</button>
+      <button className='saveBtn' onClick={handleSave}>
+        SAVE TO SPOTIFY
+      </button>
     </form>
   );
 };
