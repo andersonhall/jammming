@@ -10,9 +10,12 @@ url += '&redirect_uri=' + encodeURIComponent(redirect_uri);
 
 const Spotify = {
   getAccessToken: async () => {
-    const token = window.location.href.match(/access_token=([^&]*)/);
-    if (token) {
-      return token[1];
+    const accessToken = window.location.href.match(/access_token=([^&]*)/);
+    const expiresIn = window.location.href.match(/expires_in=([^&]*)/);
+
+    if (accessToken && expiresIn) {
+      const expirationTime = Date.now() + expiresIn[1] * 1000;
+      return [accessToken[1], Number(expirationTime)];
     } else {
       window.location = url;
     }

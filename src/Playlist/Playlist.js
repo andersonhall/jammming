@@ -10,8 +10,6 @@ const Playlist = props => {
   const handleSave = event => {
     event.preventDefault();
     const uris = props.playlist.tracks.map(track => track.uri);
-    console.log('Save playlist to Spotify');
-    console.log(uris);
   };
   return (
     <form action='#'>
