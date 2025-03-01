@@ -9,18 +9,30 @@ const Playlist = props => {
   };
   const handleSave = event => {
     event.preventDefault();
-    const uris = props.playlist.tracks.map(track => track.uri);
+    const input = document.getElementById('playlistName');
+    if (input.value === '') {
+      return alert('You must include a playlist name');
+    }
+    const ids = props.playlist.tracks.map(track => track.id);
+    props.onSavePlaylist(ids);
   };
+
   return (
     <form action='#'>
-      <input id='playlistName' value={props.playlist.playlistName} onChange={handleChange} />
+      <input
+        id='playlistName'
+        value={props.playlist.playlistName}
+        placeholder='Enter a name for your playlist'
+        onChange={handleChange}
+        type='text'
+      />
       <Tracklist
         tracks={props.playlist.tracks}
         name={props.playlist.playlistName}
         onSelectTrack={props.onSelectTrack}
         icon='-'
       />
-      <button className='saveBtn' onClick={handleSave}>
+      <button className='saveBtn' onClick={handleSave} type='submit'>
         SAVE TO SPOTIFY
       </button>
     </form>

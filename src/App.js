@@ -9,19 +9,33 @@ import Spotify from './Modules/Spotify';
 
 function App() {
   const [accessToken, setAccessToken] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState('');
 
   useEffect(() => {
-    const fetchAccessToken = async () =>
-      await Spotify.getAccessToken().then(token => {
-        setAccessToken([token[0], token[1]]);
-        const timeout = setTimeout(() => {
-          setAccessToken(null);
-          fetchAccessToken();
-        }, token[1] - Date.now());
-        return () => clearTimeout(timeout);
-      });
+    const fetchAccessToken = async () => {
+      const token = await Spotify.getAccessToken();
+      setAccessToken([token[0], token[1]]);
+      setLoading(false);
+      const timeout = setTimeout(() => {
+        setAccessToken(null);
+        fetchAccessToken();
+      }, token[1] - Date.now());
+      return () => clearTimeout(timeout);
+    };
     fetchAccessToken();
   }, []);
+
+  useEffect(() => {
+    if (accessToken) {
+      const fetchUser = async () => {
+        const user = await Spotify.getUser(accessToken[0]);
+        setUser(user);
+      };
+      fetchUser();
+    }
+    return;
+  }, [accessToken]);
 
   const [searchTracks, setSearchTracks] = useState([
     // { id: 1, name: 'Track 1', artist: 'Artist 1', album: 'Album 1', uri: 'uri1' },
@@ -33,7 +47,7 @@ function App() {
   ]);
 
   const [playlist, setPlaylist] = useState({
-    playlistName: 'New Playlist',
+    playlistName: '',
     tracks: [],
   });
 
@@ -79,7 +93,28 @@ function App() {
     );
   };
 
-  return (
+  const savePlaylist = async playlistIds => {
+    const createPlaylist = await fetch(
+      'https://api.spotify.com/v1/users/' + user.id + '/playlists',
+      {
+        headers: {
+          Authorization: 'Bearer ' + accessToken[0],
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+        body: JSON.stringify({
+          name: playlist.playlistName,
+          public: false,
+        }),
+      }
+    );
+    const response = await createPlaylist.json();
+    console.log(response);
+  };
+
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
     <div className='App'>
       <SearchBar onSearch={getSearchResults} />
       <main>
@@ -92,6 +127,7 @@ function App() {
           playlist={playlist}
           onSelectTrack={removeFromPlaylist}
           onNameChange={changePlaylistName}
+          onSavePlaylist={savePlaylist}
         />
       </main>
     </div>
