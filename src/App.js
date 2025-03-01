@@ -93,23 +93,49 @@ function App() {
     );
   };
 
-  const savePlaylist = async playlistIds => {
-    const createPlaylist = await fetch(
-      'https://api.spotify.com/v1/users/' + user.id + '/playlists',
-      {
-        headers: {
-          Authorization: 'Bearer ' + accessToken[0],
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
-        body: JSON.stringify({
-          name: playlist.playlistName,
-          public: false,
-        }),
-      }
-    );
-    const response = await createPlaylist.json();
-    console.log(response);
+  const createNewPlaylist = async () => {
+    const res = await fetch('https://api.spotify.com/v1/users/' + user.id + '/playlists', {
+      headers: {
+        Authorization: 'Bearer ' + accessToken[0],
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        name: playlist.playlistName,
+        public: false,
+      }),
+    });
+    const data = await res.json();
+    return data.id;
+  };
+
+  const saveTracksToPlaylist = async (playlistId, uris) => {
+    const res = await fetch('https://api.spotify.com/v1/playlists/' + playlistId + '/tracks', {
+      headers: {
+        Authorization: 'Bearer ' + accessToken[0],
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        playlist_id: playlistId,
+        uris: uris,
+      }),
+    });
+    const data = await res.json();
+    clearPlaylist();
+  };
+
+  const savePlaylist = async uris => {
+    const id = await createNewPlaylist();
+    saveTracksToPlaylist(id, uris);
+  };
+
+  const clearPlaylist = () => {
+    setPlaylist({
+      playlistName: '',
+      tracks: [],
+    });
+    return alert('Your playlist was saved to Spotify.');
   };
 
   return loading ? (

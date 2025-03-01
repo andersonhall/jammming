@@ -13,8 +13,8 @@ const Playlist = props => {
     if (input.value === '') {
       return alert('You must include a playlist name');
     }
-    const ids = props.playlist.tracks.map(track => track.id);
-    props.onSavePlaylist(ids);
+    const uris = props.playlist.tracks.map(track => track.uri);
+    props.onSavePlaylist(uris);
   };
 
   return (
