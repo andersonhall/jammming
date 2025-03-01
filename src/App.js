@@ -123,6 +123,7 @@ function App() {
     });
     const data = await res.json();
     clearPlaylist();
+    return data;
   };
 
   const savePlaylist = async uris => {
